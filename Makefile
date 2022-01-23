@@ -1,4 +1,4 @@
-FILES := $(shell find . -type f -perm /111 | grep -wv sh)
+FILES := $(shell find . -type f -perm /111 | grep -wvE git\ sh)
 SOURCEDIR := src
 TESTDIR := tests
 OBJDIR := bin
