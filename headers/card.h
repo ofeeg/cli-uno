@@ -24,7 +24,7 @@ typedef struct card
 }card;
 
 char *get_cvalue(card c);
-
+char *get_ccolor(card c);
 
 
 #endif

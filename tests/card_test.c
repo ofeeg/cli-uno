@@ -5,5 +5,5 @@ int main(void)
 {
   char message[100];
   card r = {7, GREEN};
-  printf("%s", get_cvalue(r));
+  printf("%s, %s\n", get_ccolor(r), get_cvalue(r));
 }

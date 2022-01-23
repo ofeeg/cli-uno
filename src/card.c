@@ -14,3 +14,21 @@ char* get_cvalue(card c)
   return msg;
 }
 
+char *get_ccolor(card c)
+{
+  char* msg;
+  msg = malloc(sizeof(char)*7);
+  switch (c.color) {
+  case GREEN:
+    strcpy(msg, "Green"); break;
+  case BLUE:
+    strcpy(msg, "Blue"); break;
+  case RED:
+    strcpy(msg, "Red"); break;
+  case YELLOW:
+    strcpy(msg, "Yellow"); break;
+  default:
+    strcpy(msg, " \0"); break;
+  }
+  return msg;
+}
