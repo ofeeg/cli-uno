@@ -1,30 +1,20 @@
-SOURCEDIR= src
-TESTDIR= tests
-SOURCES= $(wildcard $(SOURCEDIR)/*.c)
-TESTS= $(wildcard $(TESTDIR)/*.c)
-OBJECTS= $(patsubst $(SOURCEDIR)%.c,%.o,$(SOURCES))
-TEST_OBJECTS= $(patsubst $(TESTDIR)%_test.c,%.o,$(TESTS))
-CC=gcc
+FILES := $(shell find . -type f -perm /111 | grep -wv sh)
+SOURCEDIR := src
+TESTDIR := tests
+OBJDIR := bin
+SRCS := $(wildcard $(SOURCEDIR)/*.c)
+OBJS := $(patsubst $(SOURCEDIR)/%.c,%.o,$(SRCS))
+TESTS := $(wildcard $(TESTDIR)/*.c)
+TOBJS := $(patsubst $(TESTDIR)/%.c,$(OBJDIR)/%,$(TESTS))
+CC = gcc
 
-#FLAGS=
+uno: $(OBJS)
+	$(CC) $^ main.c -o $@
+tests: $(OBJS)
+	$(shell ./compile_tests.sh)
 
-all: uno
-
-debug: dbguno
-
-uno: $(OBJECTS)
-	$(CC) -Wall -o $@ $^ 
-
-dbguno: $(OBJECTS)
-	$(CC) -g -Wall -o $@ $^
-
-tests: $(TEST_OBJECTS)
-
-$(TEST_OBJECTS): %.o: $(OBJECTS)
-	$(CC) -Wall $(TESTDIR)$*_test.c $^ -o $@
-
-#$(#OBJECTS): $(#SOURCES)
-#	$(#CC) -g -Wall -c -o $@ $<
+$(OBJS): %: 
+	$(CC) -c $(SRCS) 
 
 clean:
-	rm -f */*.o */*.c~ 
+	rm -f *.o  */*.o */*.c~ *.c~ */*.h~ *~ $(FILES)
