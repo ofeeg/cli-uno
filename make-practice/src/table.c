@@ -1,12 +1,12 @@
-#include "../headers/grid.h"
+#include "../headers/table.h"
 #define TABLE_SIZE  485
-static const char empty_space = ' ';
+#define EMPTY_SPACE ' '
 char table[TABLE_SIZE];
 
 
 void create_table()
 {
-  memset(table, ' ', sizeof table);
+  memset(table, EMPTY_SPACE, sizeof table);
 
   for (size_t i=0; i < 20; ++i)
   {
