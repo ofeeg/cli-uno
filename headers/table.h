@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <string.h>
 #define WALL '#'
-#define UNKNOWN 'U'
+#define UNKNOWN '@'
 
 
 
