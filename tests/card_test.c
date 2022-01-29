@@ -7,7 +7,7 @@ int main(void)
 {
   uint8_t colors[5] = {RED, BLUE, GREEN, YELLOW, NONE};
   uint8_t value = 0;
-  for(size_t c_i = 0; c_i < 6; ++c_i)
+  for(size_t c_i = 0; c_i < 6; ++c_i) //you can make a deck this way, if you like
     {
       value = 0;
       if(c_i < 5)
