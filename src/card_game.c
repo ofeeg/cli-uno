@@ -4,15 +4,20 @@
 
 card *set_of_cards;
 size_t num_of_cards;
+uint8_t *drawn_cards;
+uint8_t *played_cards;
 uint8_t set_check = NO_CARDSET;
+uint32_t draw_index = 0;
 
 void load_cards(char game_mode)
 {
   switch (game_mode) {
   case STANDARD_UNO:
     {
-      set_of_cards = (card *) malloc(112 * sizeof(card));
       num_of_cards = 112;
+      set_of_cards = (card *) malloc(num_of_cards * sizeof(card));
+      drawn_cards = (uint8_t *)malloc(num_of_cards*sizeof(uint8_t));
+      played_cards = (uint8_t *)malloc(num_of_cards*sizeof(uint8_t));
       uint8_t colors[5] = {RED, BLUE, GREEN, YELLOW, NONE};
       uint8_t value = 0;
       for(size_t c_i = 0; c_i < 5; ++c_i) 
@@ -54,4 +59,12 @@ uint8_t* init_deck()
   uint8_t *deck = (uint8_t *) malloc(num_of_cards);
   for(uint8_t i = 0; i < 5; ++i){deck[i] = i;}
   return deck;
+}
+
+int draw_card(uint8_t *deck, size_t d_size)
+{
+  uint8_t card = deck[(draw_index % d_size)];
+  drawn_cards[draw_index] = card;
+  draw_index++;
+  return card;
 }
