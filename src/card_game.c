@@ -11,7 +11,7 @@ void load_cards(char game_mode)
   switch (game_mode) {
   case STANDARD_UNO:
     {
-      set_of_cards = (card *) malloc(112 * 4);
+      set_of_cards = (card *) malloc(112 * sizeof(card));
       num_of_cards = 112;
       uint8_t colors[5] = {RED, BLUE, GREEN, YELLOW, NONE};
       uint8_t value = 0;
@@ -51,7 +51,7 @@ void load_cards(char game_mode)
 uint8_t* init_deck()
 {
   if(set_check == NO_CARDSET){printf("No cards to make deck. How did that happen? Exiting..."); exit(2);}
-  uint8_t *deck = (uint8_t *) malloc(1000);
+  uint8_t *deck = (uint8_t *) malloc(num_of_cards);
   for(uint8_t i = 0; i < 5; ++i){deck[i] = i;}
   return deck;
 }
