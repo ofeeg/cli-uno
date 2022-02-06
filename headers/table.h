@@ -6,7 +6,12 @@
 #include <string.h>
 #define WALL '#'
 #define UNKNOWN '@'
-
+#define TABLE_SIZE  485
+#define EMPTY_SPACE ' '
+#define PLAYER_2_SPACE 27
+#define PLAYER_3_SPACE 127
+#define PLAYER_4_SPACE 144
+#define PLAYER_1_SPACE 384
 
 
 void create_table();

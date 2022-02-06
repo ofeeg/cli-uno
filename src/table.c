@@ -1,6 +1,5 @@
 #include "../headers/table.h"
-#define TABLE_SIZE  485
-#define EMPTY_SPACE ' '
+
 char table[TABLE_SIZE];
 
 
