@@ -8,6 +8,8 @@ TESTS := $(wildcard $(TESTDIR)/*.c)
 TOBJS := $(patsubst $(TESTDIR)/%.c,$(OBJDIR)/%,$(TESTS))
 CC = gcc
 
+depend:
+	makedepend -Y -fdepends --  -- $(TESTS)
 uno: $(OBJS)
 	$(CC) $^ main.c -o $@
 tests: $(OBJS)
@@ -18,3 +20,7 @@ $(OBJS): %:
 
 clean:
 	rm -f *.o  */*.o */*.c~ *.c~ */*.h~ *~ $(FILES)
+# DO NOT DELETE
+
+tests/uno_test.o: headers/uno.h headers/card_game.h headers/card.h
+tests/uno_test.o: headers/table.h
