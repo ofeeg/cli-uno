@@ -1,0 +1,27 @@
+# Makefile:
+
+###
+#makedepends related settings
+# -Y	Don't search standard library paths this is excessive.
+# -f output dependencies to this file
+# -s use this token string
+###
+
+DEPFILE = .depends
+DEPTOKEN = '\# MAKEDEPENDS'
+DEPFLAGS = -Y -f $(DEPFILE) -s $(DEPTOKEN) -p $(OUTDIR)/
+
+SRCS := $(wildcard $(SOURCEDIR)/*.c)
+OBJs := $(SRCS:%.c=.o)
+OBJS_O := $(foreach obj, $(OBJS), $(OUTDIR)/$(obj))
+
+depend:
+	rm -f $(DEPFILE)
+	make $(DEPFILE)
+$(DEPFILE):
+	@echo $(DEPTOKEN) > $(DEPFILE)
+	makedepend $(DEPFLAGS) -- $(CFLAGS) -- $(SRC) >&/dev/null
+
+#put this file in the last line of your Makefile
+sinclude $(DEPFILE)
+
