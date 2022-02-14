@@ -1,7 +1,10 @@
 #include "../headers/player.h"
+#include <stdio.h>
 
-char read_input()
+char player_input;
+
+const char read_input()
 {
- 
-
+  scanf("%c", &player_input);
+  return player_input;
 }

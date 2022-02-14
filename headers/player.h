@@ -1,4 +1,4 @@
 #include <stdio.h>
 
-char read_input();
+const char read_input();
 
