@@ -6,7 +6,7 @@
 extern card *set_of_cards;
 extern uint8_t plays;
 extern char table[];
-extern uint8_t uno_deck[];
+extern uint8_t *uno_deck;
 extern size_t num_of_cards;
 
 
