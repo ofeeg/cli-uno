@@ -6,6 +6,7 @@
 
 void load_cards(char game_mode);
 uint8_t* init_deck();
-int draw_card(uint8_t * deck, size_t d_size);
+int draw_card(uint8_t *deck, size_t d_size);
 void play_card(card* set, uint8_t card);
+void  shuffle_deck(uint8_t *deck, size_t d_size);
 #endif

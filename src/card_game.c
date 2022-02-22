@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 card *set_of_cards;
 size_t num_of_cards;
@@ -60,7 +61,7 @@ uint8_t* init_deck()
 {
   if(set_check == NO_CARDSET){printf("No cards to make deck. How did that happen? Exiting..."); exit(2);}
   uint8_t *deck = (uint8_t *) malloc(num_of_cards);
-  for(uint8_t i = 0; i < 5; ++i){deck[i] = i;}
+  for(uint8_t i = 0; i < num_of_cards; ++i){deck[i] = i;}
   return deck;
 }
 
@@ -72,9 +73,23 @@ int draw_card(uint8_t *deck, size_t d_size)
   return card;
 }
 
-void play_card(card *set, uint8_t card)
+void play_card(card* set, uint8_t card)
 {
   size_t played_card = num_of_cards - plays;
   played_cards[played_card] = card;
   ++plays;
+}
+
+#define FISCHER_YATES_CONDITION(i, k, n) (i <= k && k < n)
+
+void shuffle_deck(uint8_t *deck, size_t d_size)
+{
+ srand(time(0));
+ for(size_t i = 0; i<d_size-2; ++i){
+  size_t r_num  =  (rand() % d_size);
+  if(!FISCHER_YATES_CONDITION(i, r_num, d_size)){while(!FISCHER_YATES_CONDITION(i, r_num, d_size)){r_num = (rand() % d_size);}}
+  uint8_t tmp = deck[i];
+  deck[i] = deck[r_num];
+  deck[r_num] = tmp;
+ }
 }

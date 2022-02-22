@@ -13,6 +13,7 @@ int main(void) {
   printf("%d\n", plays);
   play_card(set_of_cards, crd);
   printf("%d\n", plays);
+  shuffle_deck(card_deck, num_of_cards);
   free(set_of_cards);
   free(card_deck);
   return 0;
