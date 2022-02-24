@@ -9,7 +9,7 @@ card *set_of_cards;
 size_t num_of_cards;
 uint8_t *cards_in_play;
 uint8_t *played_cards;
-size_t plays = 0;
+size_t plays = 1;
 uint8_t set_check = NO_CARDSET;
 uint32_t draw_index = 0;
 
@@ -75,8 +75,8 @@ int draw_card(uint8_t *deck, size_t d_size)
 
 void play_card(card* set, uint8_t card)
 {
-  size_t played_card = num_of_cards - plays;
-  played_cards[played_card] = card;
+  size_t arr_index = num_of_cards - plays;
+  played_cards[arr_index] = card;
   ++plays;
 }
 

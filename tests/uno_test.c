@@ -16,10 +16,11 @@ int main(void)
   puts(table);
   uint8_t hand_size = num_of_cards;
   uint8_t hand[num_of_cards];
-  memset(hand, 254, num_of_cards);
+  memset(hand, 250, num_of_cards);
   hand[--hand_size] = draw_card(uno_deck, num_of_cards);
   hand[--hand_size] = draw_card(uno_deck, num_of_cards);
-  play_card(set_of_cards, hand[hand_size+2]);
+  play_card(set_of_cards, hand[hand_size]), ++hand_size;
+  play_card(set_of_cards, hand[hand_size]), ++hand_size;
   printf("You have played a %s %s!\n",get_ccolor(set_of_cards[hand[hand_size]]), get_cvalue(set_of_cards[hand[hand_size]]));
   return 0;
 }
