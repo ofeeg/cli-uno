@@ -16,7 +16,7 @@ tests: $(OBJS)
 	$(shell ./compile_tests.sh)
 
 $(OBJS): %: 
-	$(CC)  -c $(SRCS) 
+	$(CC) -g -c $(SRCS) 
 
 clean:
 	rm -f *.o  */*.o */*.c~ *.c~ */*.h~ *~ $(FILES)

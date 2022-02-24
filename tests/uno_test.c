@@ -19,9 +19,8 @@ int main(void)
   memset(hand, 250, num_of_cards);
   hand[--hand_size] = draw_card(uno_deck, num_of_cards);
   hand[--hand_size] = draw_card(uno_deck, num_of_cards);
-  play_card(set_of_cards, hand[hand_size]), ++hand_size;
-  play_card(set_of_cards, hand[hand_size]), ++hand_size;
-  printf("You have played a %s %s!\n",get_ccolor(set_of_cards[hand[hand_size]]), get_cvalue(set_of_cards[hand[hand_size]]));
+  uno_validate_play(set_of_cards, hand[hand_size], &hand_size);
+  uno_validate_play(set_of_cards, hand[hand_size], &hand_size);
   return 0;
 }
 

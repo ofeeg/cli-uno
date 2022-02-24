@@ -3,4 +3,5 @@
 #include "card_game.h"
 #include "table.h"
 void init_uno();
+void uno_validate_play(card* set, uint8_t card, uint8_t *hand_size);
 #endif

@@ -73,13 +73,15 @@ int draw_card(uint8_t *deck, size_t d_size)
   return card;
 }
 
-void play_card(card* set, uint8_t card)
+void play_card(uint8_t card)
 {
   size_t arr_index = num_of_cards - plays;
   played_cards[arr_index] = card;
   ++plays;
 }
 
+/* I really just made this macro because I wanted to see if it would work.
+Also, I really hate the way I have to maneuver my hand to type < > <= >=  multiple times.*/
 #define FISCHER_YATES_CONDITION(i, k, n) (i <= k && k < n)
 
 void shuffle_deck(uint8_t *deck, size_t d_size)

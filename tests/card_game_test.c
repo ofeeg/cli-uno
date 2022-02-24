@@ -11,7 +11,7 @@ int main(void) {
   uint8_t *card_deck = init_deck();
   uint8_t crd = draw_card(card_deck, num_of_cards);
   printf("%d\n", plays);
-  play_card(set_of_cards, crd);
+  play_card(crd);
   printf("%d\n", plays);
   shuffle_deck(card_deck, num_of_cards);
   free(set_of_cards);
