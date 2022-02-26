@@ -1,8 +1,10 @@
 # DO NOT DELETE
 
 tests/card_game_test.o: headers/card_game.h headers/card.h
-tests/card_test.o: headers/card.h
+tests/interface_test.o: headers/interface.h headers/table.h headers/uno.h
+tests/interface_test.o: headers/card_game.h headers/card.h
 tests/player_test.o: headers/player.h
-tests/table_test.o: headers/table.h
 tests/uno_test.o: headers/uno.h headers/card_game.h headers/card.h
 tests/uno_test.o: headers/table.h
+tests/table_test.o: headers/table.h
+tests/card_test.o: headers/card.h

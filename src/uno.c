@@ -1,6 +1,6 @@
 #include "../headers/uno.h"
 #include "../headers/table.h"
-#define CARD_SPACE '&'
+
 
 extern char table[];
 extern size_t num_of_cards;

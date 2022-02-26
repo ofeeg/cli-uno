@@ -6,6 +6,7 @@
 #include <string.h>
 #define WALL '#'
 #define UNKNOWN '@'
+#define CARD_SPACE '&'
 #define TABLE_SIZE  485
 #define EMPTY_SPACE ' '
 #define PLAYER_2_SPACE 27
