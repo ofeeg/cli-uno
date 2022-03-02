@@ -24,7 +24,10 @@ void init_uno()
     }
 }
 
-void uno_validate_play(card* set, uint8_t card, uint8_t *hand_size)
+
+char *concatf(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
+
+const char* uno_validate_play(card* set, uint8_t card, uint8_t *hand_size)
 {
  uint8_t arr_index = num_of_cards - plays;
  if(plays == 1 || set[card].color == NONE)
@@ -32,18 +35,37 @@ void uno_validate_play(card* set, uint8_t card, uint8_t *hand_size)
    played_cards[arr_index] = card;
    ++*hand_size;
    play_card(card);
-   printf("You have played a %s %s!\n",get_ccolor(set_of_cards[card]), get_cvalue(set_of_cards[card]));
-   return;
+   //printf("You have played a %s %s!\n",get_ccolor(set_of_cards[card]), get_cvalue(set_of_cards[card]));
+   return concatf("You have played a %s %s!\n",get_ccolor(set_of_cards[card]), get_cvalue(set_of_cards[card]));
   }
  else
   {
    if(set[card].color != set[played_cards[arr_index+1]].color || set[played_cards[arr_index+1]].color == NONE)
     {
-     printf("You can't play this card.\n"); return;
+     return concatf("You can't play this card.\n");
     }
    played_cards[arr_index] = card;
    ++*hand_size;
    play_card(card);
   }
- printf("You have played a %s %s!\n",get_ccolor(set_of_cards[card]), get_cvalue(set_of_cards[card]));
+ return concatf("You have played a %s %s!\n",get_ccolor(set_of_cards[card]), get_cvalue(set_of_cards[card]));
 }
+
+
+
+#include <stdarg.h>
+char *concatf(const char *fmt, ...) 
+{
+  va_list args;
+  va_start(args, fmt);
+  char* buf = NULL;
+  int n = vsnprintf(NULL, 0, fmt, args);
+  va_end(args);
+  if (n >= 0) {
+    va_start(args, fmt);
+    buf = malloc(n+1);
+    if (buf) vsnprintf(buf, n+1, fmt, args);
+    va_end(args);
+  }
+  return buf;
+} 

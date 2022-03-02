@@ -28,7 +28,7 @@ char *get_ccolor(card c)
   case YELLOW:
     strcpy(msg, "Yellow"); break;
   default:
-    strcpy(msg, " \0"); break;
+    strcpy(msg, ""); break;
   }
   return msg;
 }
