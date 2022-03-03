@@ -11,11 +11,11 @@ CC = gcc
 depend:
 	makedepend -Y -fdepends --  -- $(TESTS)
 uno: $(OBJS)
-	$(CC) $^ main.c -o $@
+	$(CC) $^ main.c  -lncurses -o $@
 tests: $(OBJS)
 	$(shell ./compile_tests.sh)
 
-$(OBJS): %: 
+$(OBJS): %:
 	$(CC) -g -c $(SRCS) 
 
 clean:

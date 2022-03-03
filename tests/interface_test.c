@@ -1,6 +1,14 @@
 #include "../headers/interface.h"
+#include <curses.h>
+
+extern WINDOW *windows[];
 
 int main(void)
 {
- return 0;
+  init_uno_interface();
+  refresh();
+  wrefresh(windows[0]);
+  getch();
+  endwin();
+  return 0;
 }
