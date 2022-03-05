@@ -1,4 +1,5 @@
-#include "table.h"
+#ifndef INTERFACE_H
+#define INTERFACE_H
 #include "uno.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,3 +16,4 @@
 #define PLAYER_1_SPACE 384
 
 void init_uno_interface();
+#endif
