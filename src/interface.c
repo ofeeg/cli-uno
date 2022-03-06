@@ -21,8 +21,8 @@ void init_uno_interface()
   WINDOW *hand_textp2 = subwin(table, 9, 3, 7, 17);
   WINDOW *hand_textp3 = subwin(table, 3, 9, 4, 7);
   WINDOW *hand_textp4 = subwin(table, 9, 3, 7, 4);
-  WINDOW *scores = newwin(3, 16, 3, 36);
-  WINDOW *score_box_text = newwin(3,16, 1, 36);
+  WINDOW *scores = newwin(3, 26, 3, 28);
+  WINDOW *score_box_text = newwin(3,26, 1, 28);
   WINDOW *log = newwin(14, 24, 11, 30);
   WINDOW *log_text = newwin(3, 24, 9, 30);
   box(log,0,0);
@@ -43,8 +43,9 @@ void init_uno_interface()
   ui_print_in_middle_v(hand_textp2, 0, 1, 9, "p2 Hand", COLOR_PAIR(1));
   ui_print_in_middle(hand_textp3, 1, 0, 9, "p3 Hand", COLOR_PAIR(1));
   ui_print_in_middle_v(hand_textp4, 0, 1, 9, "p4 Hand", COLOR_PAIR(1));
-  ui_print_in_middle(score_box_text, 1, 0, 16, "Score", COLOR_PAIR(1));
+  ui_print_in_middle(score_box_text, 1, 0, 26, "Score", COLOR_PAIR(1));
   ui_print_in_middle(log_text, 1, 0, 24, "Log", COLOR_PAIR(1));
+  ui_print_in_middle(scores, 1, 0, 26, "1:000 2:000 3:000 4:000", COLOR_PAIR(1));
   windows[0] = table;
   windows[1] = your_hand;
   windows[2] = hand_text;
