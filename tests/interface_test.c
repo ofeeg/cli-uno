@@ -8,10 +8,10 @@ int main(void)
   init_uno();
   init_uno_interface();
   refresh();
-  wrefresh(windows[0]);
+  wrefresh(windows[TABLE_W]);
   wrefresh(windows[9]);
-  wrefresh(windows[10]);
-  wrefresh(windows[11]);
+  wrefresh(windows[SCORES_W]);
+  wrefresh(windows[LOG_W]);
   wrefresh(windows[12]);
   refresh();
   getch();

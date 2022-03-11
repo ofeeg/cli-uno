@@ -1,5 +1,7 @@
 #include "../headers/interface.h"
 #include <curses.h>
+
+#define DEFAULT_C 1
 WINDOW *windows[14];
 
 void ui_print_in_middle(WINDOW *win, int starty, int startx, int width, char *string, chtype color);
@@ -24,6 +26,7 @@ void init_uno_interface()
   WINDOW *scores = newwin(3, 26, 3, 28);
   WINDOW *score_box_text = newwin(3,26, 1, 28);
   WINDOW *log = newwin(14, 24, 11, 30);
+  scrollok(log, TRUE);
   WINDOW *log_text = newwin(3, 24, 9, 30);
   box(log,0,0);
   box(log_text,0,0);
@@ -38,14 +41,14 @@ void init_uno_interface()
   box(p4_hand, 0, 0);
   box(hand_textp4,0,0);
   start_color();
-  init_pair(1, COLOR_BLACK, COLOR_WHITE);
-  ui_print_in_middle(hand_text, 1, 0, 9, "My Hand", COLOR_PAIR(1));
-  ui_print_in_middle_v(hand_textp2, 0, 1, 9, "p2 Hand", COLOR_PAIR(1));
-  ui_print_in_middle(hand_textp3, 1, 0, 9, "p3 Hand", COLOR_PAIR(1));
-  ui_print_in_middle_v(hand_textp4, 0, 1, 9, "p4 Hand", COLOR_PAIR(1));
-  ui_print_in_middle(score_box_text, 1, 0, 26, "Score", COLOR_PAIR(1));
-  ui_print_in_middle(log_text, 1, 0, 24, "Log", COLOR_PAIR(1));
-  ui_print_in_middle(scores, 1, 0, 26, "1:000 2:000 3:000 4:000", COLOR_PAIR(1));
+  init_pair(DEFAULT_C, COLOR_BLACK, COLOR_WHITE);
+  ui_print_in_middle(hand_text, 1, 0, 9, "My Hand", COLOR_PAIR(DEFAULT_C));
+  ui_print_in_middle_v(hand_textp2, 0, 1, 9, "p2 Hand", COLOR_PAIR(DEFAULT_C));
+  ui_print_in_middle(hand_textp3, 1, 0, 9, "p3 Hand", COLOR_PAIR(DEFAULT_C));
+  ui_print_in_middle_v(hand_textp4, 0, 1, 9, "p4 Hand", COLOR_PAIR(DEFAULT_C));
+  ui_print_in_middle(score_box_text, 1, 0, 26, "Score", COLOR_PAIR(DEFAULT_C));
+  ui_print_in_middle(log_text, 1, 0, 24, "Log", COLOR_PAIR(DEFAULT_C));
+  ui_print_in_middle(scores, 1, 0, 26, "1:000 2:000 3:000 4:000", COLOR_PAIR(DEFAULT_C));
   windows[0] = table;
   windows[1] = your_hand;
   windows[2] = hand_text;

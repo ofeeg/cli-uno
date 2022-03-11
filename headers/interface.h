@@ -15,5 +15,13 @@
 #define PLAYER_4_SPACE 144
 #define PLAYER_1_SPACE 384
 
+#define TABLE_W 0
+#define YOUR_HAND_W 1
+#define P2_HAND_W 3
+#define P3_HAND_W 4
+#define P4_HAND_W 5
+#define SCORES_W 10
+#define LOG_W 11
+
 void init_uno_interface();
 #endif
