@@ -14,19 +14,19 @@ int main(void)
   wrefresh(windows[LOG_W]);
   wrefresh(windows[13]);
   wrefresh(windows[12]);
-  mvwprintw(windows[P2_HAND_W], 1, 1, "T");
-  mvwprintw(windows[P2_HAND_W], 7, 1, "T");
-  while (1) {
-    char c = wgetch(windows[LOG_W]);
-    switch(c) {
-    default:
-      wprintw(windows[LOG_W], "You have played a\n  Wild Card!\n");
-      wrefresh(windows[LOG_W]);
-      wrefresh(windows[P2_HAND_W]);
-    }
-  }
+  /* mvwprintw(windows[P2_HAND_W], 1, 1, "T"); */
+  /* mvwprintw(windows[P2_HAND_W], 7, 1, "T"); */
+  /* while (1) { */
+  /*   char c = wgetch(windows[LOG_W]); */
+  /*   switch(c) { */
+  /*   default: */
+  /*     wprintw(windows[LOG_W], "You have played a\n  Wild Card!\n"); */
+  /*     wrefresh(windows[LOG_W]); */
+  /*     wrefresh(windows[P2_HAND_W]); */
+  /*   } */
+  /* } */
+  menu_control();
   refresh();
-  getch();
   endwin();
   return 0;
 }

@@ -1,5 +1,6 @@
 #include "../headers/interface.h"
 #include <curses.h>
+#include <stdint.h>
 
 #define DEFAULT_C 1
 WINDOW *windows[14];
@@ -12,6 +13,10 @@ void init_uno_interface()
 {
   int main_cols, main_rows;
   initscr();
+  noecho();
+  //nodelay(stdscr, TRUE);
+  keypad(stdscr, TRUE);
+  cbreak();
   getmaxyx(stdscr, main_rows, main_cols);
   WINDOW *table = newwin(22, 22, 1, 1);
   box(table,0,0);
@@ -64,6 +69,30 @@ void init_uno_interface()
   windows[11] = log;
   windows[12] = log_text;
   windows[13] = log_box;
+}
+
+void menu_control()
+{
+  uint8_t position = 1;
+  refresh();
+  while(1){
+    int c = mvgetch(20, (7+position));
+    refresh();
+    switch(c)
+      {
+      case KEY_RIGHT:
+	if(position < 7) position+=1;
+	break;
+      case KEY_LEFT:
+	if(position > 1) position-=1;
+	break;
+      case KEY_ENTER:
+	wprintw(windows[LOG_W], "You have selected\n Position %d!\n", position);
+	wrefresh(windows[LOG_W]);
+	refresh();
+	break;
+      }
+  }
 }
 
 void ui_print_in_middle(WINDOW *win, int starty, int startx, int width, char *string, chtype color)
