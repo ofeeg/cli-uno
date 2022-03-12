@@ -81,12 +81,12 @@ void menu_control()
     switch(c)
       {
       case KEY_RIGHT:
-	if(position < 7) position+=1;
+	if(position < 7) ++position;
 	break;
       case KEY_LEFT:
-	if(position > 1) position-=1;
+	if(position > 1) --position;
 	break;
-      case KEY_ENTER:
+      case 10:
 	wprintw(windows[LOG_W], "You have selected\n Position %d!\n", position);
 	wrefresh(windows[LOG_W]);
 	refresh();
