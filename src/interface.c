@@ -25,10 +25,11 @@ void init_uno_interface()
   WINDOW *hand_textp4 = subwin(table, 9, 3, 7, 4);
   WINDOW *scores = newwin(3, 26, 3, 28);
   WINDOW *score_box_text = newwin(3,26, 1, 28);
-  WINDOW *log = newwin(14, 24, 11, 30);
+  WINDOW *log_box = newwin(14, 24, 11, 30);
+  WINDOW *log = newwin(12, 22, 12, 31);
   scrollok(log, TRUE);
   WINDOW *log_text = newwin(3, 24, 9, 30);
-  box(log,0,0);
+  box(log_box,0,0);
   box(log_text,0,0);
   box(scores,0,0);
   box(score_box_text,0,0);
@@ -62,6 +63,7 @@ void init_uno_interface()
   windows[10] = scores;
   windows[11] = log;
   windows[12] = log_text;
+  windows[13] = log_box;
 }
 
 void ui_print_in_middle(WINDOW *win, int starty, int startx, int width, char *string, chtype color)

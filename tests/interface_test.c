@@ -12,7 +12,13 @@ int main(void)
   wrefresh(windows[9]);
   wrefresh(windows[SCORES_W]);
   wrefresh(windows[LOG_W]);
+  wrefresh(windows[13]);
   wrefresh(windows[12]);
+  mvwprintw(windows[P2_HAND_W], 1, 1, "T");
+  mvwprintw(windows[P2_HAND_W], 7, 1, "T");
+  wprintw(windows[LOG_W], "You hae played a  Wild Card!");
+  wrefresh(windows[LOG_W]);
+  wrefresh(windows[P2_HAND_W]);
   refresh();
   getch();
   endwin();
