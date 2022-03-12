@@ -2,8 +2,14 @@
 #include <curses.h>
 #include <stdint.h>
 
-#define DEFAULT_C 1
+#define DEFAULT_C 27
 WINDOW *windows[14];
+
+extern card *set_of_cards;
+extern uint8_t plays;
+extern uint8_t *uno_deck;
+extern size_t num_of_cards;
+extern uint8_t hand_size;
 
 void ui_print_in_middle(WINDOW *win, int starty, int startx, int width, char *string, chtype color);
 void ui_print_in_middle_v(WINDOW *win, int starty, int startx, int width, char *string, chtype color);
@@ -48,6 +54,10 @@ void init_uno_interface()
   box(hand_textp4,0,0);
   start_color();
   init_pair(DEFAULT_C, COLOR_BLACK, COLOR_WHITE);
+  init_pair(RED, COLOR_WHITE, COLOR_RED);
+  init_pair(BLUE, COLOR_WHITE, COLOR_BLUE);
+  init_pair(GREEN, COLOR_WHITE, COLOR_GREEN);
+  init_pair(YELLOW, COLOR_WHITE, COLOR_YELLOW);
   ui_print_in_middle(hand_text, 1, 0, 9, "My Hand", COLOR_PAIR(DEFAULT_C));
   ui_print_in_middle_v(hand_textp2, 0, 1, 9, "p2 Hand", COLOR_PAIR(DEFAULT_C));
   ui_print_in_middle(hand_textp3, 1, 0, 9, "p3 Hand", COLOR_PAIR(DEFAULT_C));
@@ -71,7 +81,7 @@ void init_uno_interface()
   windows[13] = log_box;
 }
 
-void menu_control()
+void uno_menu_control()
 {
   uint8_t position = 1;
   refresh();
@@ -87,7 +97,7 @@ void menu_control()
 	if(position > 1) --position;
 	break;
       case 10:
-	wprintw(windows[LOG_W], "You have selected\n Position %d!\n", position);
+	wprintw(windows[LOG_W], uno_validate_play(set_of_cards, position, &hand_size));
 	wrefresh(windows[LOG_W]);
 	refresh();
 	break;

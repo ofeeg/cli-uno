@@ -24,5 +24,5 @@
 #define LOG_W 11
 
 void init_uno_interface();
-void menu_control();
+void uno_menu_control();
 #endif
