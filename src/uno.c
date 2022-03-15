@@ -37,7 +37,7 @@ static void distribute_hands()
       hand[--hand_size] = draw_card(uno_deck, num_of_cards);
       hand2[--hand_size2] = draw_card(uno_deck, num_of_cards);
       hand3[--hand_size3] = draw_card(uno_deck, num_of_cards);
-      hand4[hand_size4] = draw_card(uno_deck, num_of_cards);
+      hand4[--hand_size4] = draw_card(uno_deck, num_of_cards);
     }
 }
 
