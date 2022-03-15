@@ -9,7 +9,14 @@ extern card *set_of_cards;
 extern uint8_t plays;
 extern uint8_t *uno_deck;
 extern size_t num_of_cards;
+extern uint8_t *hand;
+extern uint8_t *hand2;
+extern uint8_t *hand3;
+extern uint8_t *hand4;
 extern uint8_t hand_size;
+extern uint8_t hand_size2;
+extern uint8_t hand_size3;
+extern uint8_t hand_size4;
 
 void ui_print_in_middle(WINDOW *win, int starty, int startx, int width, char *string, chtype color);
 void ui_print_in_middle_v(WINDOW *win, int starty, int startx, int width, char *string, chtype color);
@@ -153,4 +160,19 @@ void ui_print_in_middle_v(WINDOW *win, int starty, int startx, int width, char *
 	  };
 	wattroff(win, color);
 	refresh();
+}
+
+static void  display_hand(uint8_t *hand, size_t cursor_index, uint8_t player)
+{
+	if(player == 1)
+		{
+			for(size_t i = cursor_index; i < cursor_index+7; ++i)
+				{
+					wattron(YOUR_HAND_W, COLOR_PAIR(set_of_cards[hand[i]].get_ccolor());
+					switch(set_of_cards[hand[i]].get_cvalue())
+						{
+							case 
+						}
+				}
+		}
 }
