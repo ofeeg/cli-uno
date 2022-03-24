@@ -16,6 +16,7 @@ int main(void) {
   hand[--hand_size] = draw_card(uno_deck, num_of_cards);
   hand[--hand_size] = draw_card(uno_deck, num_of_cards);
   printf(uno_validate_play(set_of_cards, hand[hand_size], &hand_size));
+  shift_hand(hand, hand_size-1);
   printf(uno_validate_play(set_of_cards, hand[hand_size], &hand_size));
   exit_uno();
   return 0;

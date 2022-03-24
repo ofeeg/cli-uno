@@ -41,6 +41,28 @@ static void distribute_hands()
     }
 }
 
+
+void shift_hand(uint8_t *hand, size_t index)
+{
+  size_t empty;
+  for(size_t n = index; n >= 0; --n)
+    {
+      if(hand[n] == 250)
+	{
+	  empty = n;
+	  break;
+	}
+    }
+  hand[index] = 250;
+  uint8_t tmp;
+  for(size_t i=index; i > empty; --i)
+    {
+      tmp = hand[i];
+      hand[i] = hand[i-1];
+      hand[i-1] = tmp;
+    }
+}
+
 char *concatf(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
 
 const char* uno_validate_play(card* set, uint8_t card, uint8_t *hand_size)

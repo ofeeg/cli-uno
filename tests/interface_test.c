@@ -1,5 +1,6 @@
 #include "../headers/interface.h"
 #include <ncurses.h>
+#include <stdint.h>
 
 extern WINDOW *windows[];
 
