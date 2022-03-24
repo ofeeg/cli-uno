@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 #define DEFAULT_C 27
-WINDOW *windows[14];
+WINDOW *windows[15];
 
 extern card *set_of_cards;
 extern uint8_t plays;
@@ -86,6 +86,7 @@ void init_uno_interface()
   windows[11] = log;
   windows[12] = log_text;
   windows[13] = log_box;
+  
 }
 
 
@@ -94,19 +95,21 @@ static void  display_hand(uint8_t *hand, size_t cursor_index, uint8_t player);
 void uno_menu_control()
 {
   uint8_t position = 1;
-  uint8_t cursor_index = 0;
+  int cursor_index = 0;
   display_hand(hand, cursor_index,1);
   refresh();
   while(1){
+    mvaddstr(23, 1, "                                ");
+    mvaddstr(23, 1, get_ccolor(set_of_cards[hand[hand_size+cursor_index]]));
+    mvaddstr(23, 8, get_cvalue(set_of_cards[hand[hand_size+cursor_index]]));
     int c = mvgetch(20, (7+position));
-    hand[--hand_size] = draw_card(uno_deck, num_of_cards);
     refresh();
     switch(c)
       {
       case KEY_RIGHT:
 	if(position < 7){++position; ++cursor_index;}
 	else{
-	  if(hand[num_of_cards-(cursor_index+1)] != 250){
+	  if(num_of_cards-(cursor_index+1) > hand_size){
 	    display_hand(hand, (++cursor_index)-6, 1);
 	    wrefresh(windows[YOUR_HAND_W]);
 	  }
@@ -115,14 +118,15 @@ void uno_menu_control()
       case KEY_LEFT:
 	if(position > 1){ --position; --cursor_index;}
 	else{
-	  if(cursor_index-1 > 0){
+	  if(cursor_index-1 >= 0){
 	    display_hand(hand, (--cursor_index), 1);
 	    wrefresh(windows[YOUR_HAND_W]);
 	  }
 	}
 	break;
       case 10:
-	wprintw(windows[LOG_W], uno_validate_play(set_of_cards, hand, &hand_size, cursor_index+hand_size));
+	wprintw(windows[LOG_W], uno_validate_play(set_of_cards, hand, &hand_size, ((cursor_index+hand_size) % num_of_cards)));
+	display_hand(hand, 0, 1);
 	wrefresh(windows[LOG_W]);
 	refresh();
 	break;
@@ -180,13 +184,16 @@ void ui_print_in_middle_v(WINDOW *win, int starty, int startx, int width, char *
 	refresh();
 }
 
+//static void color_selector(
+
 static void  display_hand(uint8_t *hand, size_t cursor_index, uint8_t player)
 {
   if(player == 1)
     {
       for(size_t i = cursor_index; i < cursor_index+7; ++i)
 	{
-	  if(hand[hand_size+i] ==250)
+	  if(hand_size+i > num_of_cards){mvaddch(20, 8+(i-cursor_index), ' ');}
+	  else if(hand[hand_size+i] == 250)
 	    {
 	      mvaddch(20, 8+(i-cursor_index), ' ');
 	    }
@@ -216,7 +223,7 @@ static void  display_hand(uint8_t *hand, size_t cursor_index, uint8_t player)
 		  wattroff(windows[YOUR_HAND_W], COLOR_PAIR(set_of_cards[hand[hand_size+i]].color));
 		  break;
 		default:
-		  mvaddch(20, 8+(i-cursor_index), ((uint8_t)set_of_cards[hand[hand_size+1]].value)+48);
+		  mvaddch(20, 8+(i-cursor_index), get_cvalue(set_of_cards[hand[hand_size+i]])[0]);
 		  wattroff(windows[YOUR_HAND_W], COLOR_PAIR(set_of_cards[hand[hand_size+i]].color));
 		  break;
 		}

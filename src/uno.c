@@ -1,6 +1,8 @@
 #include "../headers/uno.h"
+#include <curses.h>
+#include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
-
 extern size_t num_of_cards;
 extern uint8_t *played_cards;
 extern uint8_t plays;
@@ -67,28 +69,29 @@ char *concatf(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
 
 const char* uno_validate_play(card* set, uint8_t *hand, uint8_t *hand_size, size_t index)
 {
+  if(hand[index] == (uint8_t)250) return concatf("Not a card.");
   uint8_t card = hand[index];
- uint8_t arr_index = num_of_cards - plays;
- if(plays == 1 || set[card].color == NONE)
-  {
-   played_cards[arr_index] = card;
-   ++*hand_size;
-   play_card(card);
-   shift_hand(hand, index);
-   return concatf("You have played a %s %s!\n",get_ccolor(set_of_cards[card]), get_cvalue(set_of_cards[card]));
-  }
- else
-  {
-   if(set[card].color != set[played_cards[arr_index+1]].color || set[played_cards[arr_index+1]].color != NONE)
-    {
-     return concatf("You can't play this card.\n");
+  uint8_t arr_index = num_of_cards - plays;
+  if(plays == 1 || set[card].color == NONE)    {   
+      played_cards[arr_index] = card;
+      ++*hand_size;
+      play_card(card);
+      shift_hand(hand, index);
+      return concatf("You have played a %s %s!\n",get_ccolor(set_of_cards[card]), get_cvalue(set_of_cards[card]));
     }
-   played_cards[arr_index] = card;
-   ++*hand_size;
-   play_card(card);
-   shift_hand(hand, index);
-  }
- return concatf("You have played a %s %s!\n",get_ccolor(set_of_cards[card]), get_cvalue(set_of_cards[card]));
+  else
+    {
+      if(set[card].color != set[played_cards[arr_index+1]].color)
+	{
+	  return concatf("You can't play this card.\n");
+	}
+      if(set[played_cards[arr_index]].value == WILD_CARD || set[played_cards[arr_index]].value == DRAW_4) set[played_cards[arr_index]].color = NONE;
+      played_cards[arr_index] = card;
+      ++*hand_size;
+      play_card(card);
+      shift_hand(hand, index);
+    }
+  return concatf("You have played a %s %s!\n",get_ccolor(set_of_cards[card]), get_cvalue(set_of_cards[card]));
 }
 
 void exit_uno()
