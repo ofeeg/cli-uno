@@ -12,12 +12,11 @@ extern uint8_t *hand;
 
 int main(void) {
   init_uno();
-  
+  size_t index = num_of_cards - 2;
   hand[--hand_size] = draw_card(uno_deck, num_of_cards);
   hand[--hand_size] = draw_card(uno_deck, num_of_cards);
-  printf(uno_validate_play(set_of_cards, hand[hand_size], &hand_size));
-  shift_hand(hand, hand_size-1);
-  printf(uno_validate_play(set_of_cards, hand[hand_size], &hand_size));
+  printf(uno_validate_play(set_of_cards, hand, &hand_size, index));
+  printf(uno_validate_play(set_of_cards, hand, &hand_size, index+1));
   exit_uno();
   return 0;
 }

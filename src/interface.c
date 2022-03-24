@@ -99,14 +99,15 @@ void uno_menu_control()
   refresh();
   while(1){
     int c = mvgetch(20, (7+position));
+    hand[--hand_size] = draw_card(uno_deck, num_of_cards);
     refresh();
     switch(c)
       {
       case KEY_RIGHT:
 	if(position < 7){++position; ++cursor_index;}
 	else{
-	  if(hand[hand_size+(cursor_index+1)] != 250){
-	    display_hand(hand, ++cursor_index, 1); position = 1;
+	  if(hand[num_of_cards-(cursor_index+1)] != 250){
+	    display_hand(hand, (++cursor_index)-6, 1);
 	    wrefresh(windows[YOUR_HAND_W]);
 	  }
 	}
@@ -115,13 +116,13 @@ void uno_menu_control()
 	if(position > 1){ --position; --cursor_index;}
 	else{
 	  if(cursor_index-1 > 0){
-	    display_hand(hand, --cursor_index, 1);
+	    display_hand(hand, (--cursor_index), 1);
 	    wrefresh(windows[YOUR_HAND_W]);
 	  }
 	}
 	break;
       case 10:
-	wprintw(windows[LOG_W], uno_validate_play(set_of_cards, hand[cursor_index+hand_size], &hand_size));
+	wprintw(windows[LOG_W], uno_validate_play(set_of_cards, hand, &hand_size, cursor_index+hand_size));
 	wrefresh(windows[LOG_W]);
 	refresh();
 	break;
@@ -185,33 +186,40 @@ static void  display_hand(uint8_t *hand, size_t cursor_index, uint8_t player)
     {
       for(size_t i = cursor_index; i < cursor_index+7; ++i)
 	{
-	  wattron(windows[YOUR_HAND_W], COLOR_PAIR((uint8_t)set_of_cards[hand[hand_size+i]].color));
-	  switch(set_of_cards[hand[hand_size-i]].value)
+	  if(hand[hand_size+i] ==250)
 	    {
-	    case SKIP:
-	      mvaddch(20, 8+(i-cursor_index), 'S');
-	      wattroff(windows[YOUR_HAND_W], COLOR_PAIR(set_of_cards[hand[hand_size+i]].color));
-	      break;
-	    case REVERSE:
-	      mvaddch(20, 8+(i-cursor_index), 'U');
-	      wattroff(windows[YOUR_HAND_W], COLOR_PAIR(set_of_cards[hand[hand_size+i]].color));
-	      break;
-	    case DRAW_2:
-	      mvaddch(20, 8+(i-cursor_index), 'D');
-	      wattroff(windows[YOUR_HAND_W], COLOR_PAIR(set_of_cards[hand[hand_size+i]].color));
-	      break;
-	    case WILD_CARD:
-	      mvaddch(20, 8+(i-cursor_index), 'W');
-	      wattroff(windows[YOUR_HAND_W], COLOR_PAIR(set_of_cards[hand[hand_size+i]].color));
-	      break;
-	    case DRAW_4:
-	      mvaddch(20, 8+(i-cursor_index), 'D');
-	      wattroff(windows[YOUR_HAND_W], COLOR_PAIR(set_of_cards[hand[hand_size+i]].color));
-	      break;
-	    default:
-	      mvaddch(20, 8+(i-cursor_index), (char)(((int)set_of_cards[hand[hand_size+1]].value)+48));
-	      wattroff(windows[YOUR_HAND_W], COLOR_PAIR(set_of_cards[hand[hand_size+i]].color));
-	      break;
+	      mvaddch(20, 8+(i-cursor_index), ' ');
+	    }
+	  else
+	    {
+	      wattron(windows[YOUR_HAND_W], COLOR_PAIR(set_of_cards[hand[hand_size+i]].color));
+	      switch(set_of_cards[hand[hand_size-i]].value)
+		{
+		case SKIP:
+		  mvaddch(20, 8+(i-cursor_index), 'S');
+		  wattroff(windows[YOUR_HAND_W], COLOR_PAIR(set_of_cards[hand[hand_size+i]].color));
+		  break;
+		case REVERSE:
+		  mvaddch(20, 8+(i-cursor_index), 'U');
+		  wattroff(windows[YOUR_HAND_W], COLOR_PAIR(set_of_cards[hand[hand_size+i]].color));
+		  break;
+		case DRAW_2:
+		  mvaddch(20, 8+(i-cursor_index), 'D');
+		  wattroff(windows[YOUR_HAND_W], COLOR_PAIR(set_of_cards[hand[hand_size+i]].color));
+		  break;
+		case WILD_CARD:
+		  mvaddch(20, 8+(i-cursor_index), 'W');
+		  wattroff(windows[YOUR_HAND_W], COLOR_PAIR(set_of_cards[hand[hand_size+i]].color));
+		  break;
+		case DRAW_4:
+		  mvaddch(20, 8+(i-cursor_index), 'D');
+		  wattroff(windows[YOUR_HAND_W], COLOR_PAIR(set_of_cards[hand[hand_size+i]].color));
+		  break;
+		default:
+		  mvaddch(20, 8+(i-cursor_index), ((uint8_t)set_of_cards[hand[hand_size+1]].value)+48);
+		  wattroff(windows[YOUR_HAND_W], COLOR_PAIR(set_of_cards[hand[hand_size+i]].color));
+		  break;
+		}
 	    }
 	}
     }
