@@ -61,10 +61,10 @@ void init_uno_interface()
   box(hand_textp4,0,0);
   start_color();
   init_pair(DEFAULT_C, COLOR_BLACK, COLOR_WHITE);
-  init_pair(RED, COLOR_WHITE, COLOR_RED);
-  init_pair(BLUE, COLOR_WHITE, COLOR_BLUE);
-  init_pair(GREEN, COLOR_WHITE, COLOR_GREEN);
-  init_pair(YELLOW, COLOR_WHITE, COLOR_YELLOW);
+  init_pair(1, COLOR_WHITE, COLOR_RED);
+  init_pair(2, COLOR_WHITE, COLOR_BLUE);
+  init_pair(3, COLOR_WHITE, COLOR_GREEN);
+  init_pair(4, COLOR_WHITE, COLOR_YELLOW);
   ui_print_in_middle(hand_text, 1, 0, 9, "My Hand", COLOR_PAIR(DEFAULT_C));
   ui_print_in_middle_v(hand_textp2, 0, 1, 9, "p2 Hand", COLOR_PAIR(DEFAULT_C));
   ui_print_in_middle(hand_textp3, 1, 0, 9, "p3 Hand", COLOR_PAIR(DEFAULT_C));
@@ -184,8 +184,8 @@ void ui_print_in_middle_v(WINDOW *win, int starty, int startx, int width, char *
 	refresh();
 }
 
-//static void color_selector(
-
+static void color_selector(uint8_t card, WINDOW *win);
+static void color_off(uint8_t card, WINDOW *win);
 static void  display_hand(uint8_t *hand, size_t cursor_index, uint8_t player)
 {
   if(player == 1)
@@ -199,35 +199,78 @@ static void  display_hand(uint8_t *hand, size_t cursor_index, uint8_t player)
 	    }
 	  else
 	    {
-	      wattron(windows[YOUR_HAND_W], COLOR_PAIR(set_of_cards[hand[hand_size+i]].color));
+	      color_selector(hand[hand_size+i], windows[YOUR_HAND_W]);
 	      switch(set_of_cards[hand[hand_size-i]].value)
 		{
 		case SKIP:
 		  mvaddch(20, 8+(i-cursor_index), 'S');
-		  wattroff(windows[YOUR_HAND_W], COLOR_PAIR(set_of_cards[hand[hand_size+i]].color));
+		  color_off(hand[hand_size+i], windows[YOUR_HAND_W]);
 		  break;
 		case REVERSE:
 		  mvaddch(20, 8+(i-cursor_index), 'U');
-		  wattroff(windows[YOUR_HAND_W], COLOR_PAIR(set_of_cards[hand[hand_size+i]].color));
+		  color_off(hand[hand_size+i], windows[YOUR_HAND_W]);
 		  break;
 		case DRAW_2:
 		  mvaddch(20, 8+(i-cursor_index), 'D');
-		  wattroff(windows[YOUR_HAND_W], COLOR_PAIR(set_of_cards[hand[hand_size+i]].color));
+		  color_off(hand[hand_size+i], windows[YOUR_HAND_W]);
 		  break;
 		case WILD_CARD:
 		  mvaddch(20, 8+(i-cursor_index), 'W');
-		  wattroff(windows[YOUR_HAND_W], COLOR_PAIR(set_of_cards[hand[hand_size+i]].color));
+		  color_off(hand[hand_size+i], windows[YOUR_HAND_W]);
 		  break;
 		case DRAW_4:
 		  mvaddch(20, 8+(i-cursor_index), 'D');
-		  wattroff(windows[YOUR_HAND_W], COLOR_PAIR(set_of_cards[hand[hand_size+i]].color));
+		  color_off(hand[hand_size+i], windows[YOUR_HAND_W]);
 		  break;
 		default:
 		  mvaddch(20, 8+(i-cursor_index), get_cvalue(set_of_cards[hand[hand_size+i]])[0]);
-		  wattroff(windows[YOUR_HAND_W], COLOR_PAIR(set_of_cards[hand[hand_size+i]].color));
+		  color_off(hand[hand_size+i], windows[YOUR_HAND_W]);
 		  break;
 		}
 	    }
 	}
+    }
+}
+
+static void color_selector(uint8_t card, WINDOW *win){
+  switch(set_of_cards[card].color)
+    {
+    case RED:
+      attron(COLOR_PAIR(1));
+      break;
+    case BLUE:
+      attron(COLOR_PAIR(2));
+      break;
+    case GREEN:
+      attron(COLOR_PAIR(3));
+      break;
+    case YELLOW:
+      attron(COLOR_PAIR(4));
+      break;
+    default:
+      attron(COLOR_PAIR(DEFAULT_C));
+      break;
+    }
+}
+  
+
+static void color_off(uint8_t card, WINDOW *win){
+  switch(set_of_cards[card].color)
+    {
+    case RED:
+      attroff(COLOR_PAIR(1));
+      break;
+    case BLUE:
+      attroff(COLOR_PAIR(2));
+      break;
+    case GREEN:
+      attroff(COLOR_PAIR(3));
+      break;
+    case YELLOW:
+      attroff(COLOR_PAIR(4));
+      break;
+    default:
+      attroff(COLOR_PAIR(DEFAULT_C));
+      break;
     }
 }
