@@ -192,7 +192,10 @@ static void  display_hand(uint8_t *hand, size_t cursor_index, uint8_t player)
     {
       for(size_t i = cursor_index; i < cursor_index+7; ++i)
 	{
-	  if(hand_size+i > num_of_cards){mvaddch(20, 8+(i-cursor_index), ' ');}
+	  if(hand_size+i >= num_of_cards)
+	    {
+	      mvaddch(20, 8+(i-cursor_index), ' ');
+	    }
 	  else if(hand[hand_size+i] == 250)
 	    {
 	      mvaddch(20, 8+(i-cursor_index), ' ');
@@ -200,7 +203,7 @@ static void  display_hand(uint8_t *hand, size_t cursor_index, uint8_t player)
 	  else
 	    {
 	      color_selector(hand[hand_size+i], windows[YOUR_HAND_W]);
-	      switch(set_of_cards[hand[hand_size-i]].value)
+	      switch(set_of_cards[hand[hand_size+i]].value)
 		{
 		case SKIP:
 		  mvaddch(20, 8+(i-cursor_index), 'S');
