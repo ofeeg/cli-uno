@@ -1,6 +1,7 @@
 #ifndef UNO_H
 #define UNO_H
 #include "card_game.h"
+#include <bits/stdint-uintn.h>
 #include <string.h>
 void init_uno();
 void shift_hand(uint8_t *hand, size_t index);

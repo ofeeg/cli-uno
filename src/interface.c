@@ -1,4 +1,5 @@
 #include "../headers/interface.h"
+
 #include <curses.h>
 #include <stdint.h>
 
@@ -17,6 +18,7 @@ extern uint8_t hand_size;
 extern uint8_t hand_size2;
 extern uint8_t hand_size3;
 extern uint8_t hand_size4;
+
 
 void ui_print_in_middle(WINDOW *win, int starty, int startx, int width, char *string, chtype color);
 void ui_print_in_middle_v(WINDOW *win, int starty, int startx, int width, char *string, chtype color);
@@ -90,10 +92,13 @@ void init_uno_interface()
 }
 
 
-static void  display_hand(uint8_t *hand, size_t cursor_index, uint8_t player);
+static void display_hand(uint8_t *hand, size_t cursor_index, uint8_t player);
+
+static void wait_for_turns();
 
 void uno_menu_control()
 {
+  const char *log_msg;
   uint8_t position = 1;
   int cursor_index = 0;
   display_hand(hand, cursor_index,1);
@@ -124,16 +129,69 @@ void uno_menu_control()
 	  }
 	}
 	break;
+      case KEY_DOWN:
+	hand[--hand_size] = draw_card(uno_deck, num_of_cards);
+	display_hand(hand, cursor_index,1);
+	wrefresh(windows[YOUR_HAND_W]);
+	break;
       case 10:
-	wprintw(windows[LOG_W], uno_validate_play(set_of_cards, hand, &hand_size, ((cursor_index+hand_size) % num_of_cards)));
+	log_msg = uno_validate_play(set_of_cards, hand, &hand_size, ((cursor_index+hand_size) % num_of_cards));
+	wprintw(windows[LOG_W], log_msg);
 	display_hand(hand, 0, 1);
 	wrefresh(windows[LOG_W]);
 	refresh();
+	if(log_msg[0] != 'N' && log_msg[4] != 'c'){wait_for_turns();}
 	break;
       }
   }
 }
 
+#define TURN_COUNTER 4
+static void wait_for_turns()
+{
+  for(size_t i = 2; i <= TURN_COUNTER; ++i)
+    {
+      for(size_t n = (num_of_cards-1); n > 0; --n)
+	{
+	  if(i == 2)
+	    {
+	      const char *c = uno_validate_play(set_of_cards, hand2, &hand_size2, n);
+	      if(c[0] =='N'){
+		hand2[--hand_size2] = draw_card(uno_deck, num_of_cards); ++n;}
+	       //"You can't play this card.\n"
+	      else if(c[4] != 'c'){
+		wprintw(windows[LOG_W], c);
+		wrefresh(windows[LOG_W]);
+		refresh();
+		break;
+	      } //checking for c in message
+	    }
+	  else if(i == 3)
+	    {
+	      const char *c = uno_validate_play(set_of_cards, hand3, &hand_size3, n);
+	      if(c[0] =='N'){hand3[--hand_size3] = draw_card(uno_deck, num_of_cards); ++n;}
+	      else if(c[4] != 'c'){
+		wprintw(windows[LOG_W], c);
+		wrefresh(windows[LOG_W]);
+		refresh();
+		break;
+	      }
+	    }
+	  else 
+	    {
+	      const char *c = uno_validate_play(set_of_cards, hand4, &hand_size4, n);
+	      if(c[0] =='N'){hand4[--hand_size4] = draw_card(uno_deck, num_of_cards); ++n;}
+	      else if(c[4] != 'c'){
+		wprintw(windows[LOG_W], c);
+		wrefresh(windows[LOG_W]);
+		refresh();
+		break;
+	      }
+	    }
+	}
+    }
+  return;
+}
 void ui_print_in_middle(WINDOW *win, int starty, int startx, int width, char *string, chtype color)
 {	int length, x, y;
 	float temp;

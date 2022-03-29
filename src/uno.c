@@ -23,11 +23,11 @@ void init_uno()
   hand = (uint8_t *)malloc(num_of_cards*sizeof(uint8_t));
   memset(hand, 250, num_of_cards);
   hand2 = (uint8_t *)malloc(num_of_cards*sizeof(uint8_t));
-  memset(hand, 250, num_of_cards);
+  memset(hand2, 250, num_of_cards);
   hand3 = (uint8_t *)malloc(num_of_cards*sizeof(uint8_t));
-  memset(hand, 250, num_of_cards);
+  memset(hand3, 250, num_of_cards);
   hand4 = (uint8_t *)malloc(num_of_cards*sizeof(uint8_t));
-  memset(hand, 250, num_of_cards);
+  memset(hand4, 250, num_of_cards);
   shuffle_deck(uno_deck, num_of_cards);
   distribute_hands();
 }
@@ -81,7 +81,7 @@ const char* uno_validate_play(card* set, uint8_t *hand, uint8_t *hand_size, size
     }
   else
     {
-      if(set[card].color != set[played_cards[arr_index+1]].color)
+      if(set[card].color != set[played_cards[arr_index+1]].color || set[card].value != set[played_cards[arr_index+1]].value)
 	{
 	  return concatf("You can't play this card.\n");
 	}
