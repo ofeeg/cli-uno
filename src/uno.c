@@ -67,17 +67,25 @@ void shift_hand(uint8_t *hand, size_t index)
 
 char *concatf(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
 
-const char* uno_validate_play(card* set, uint8_t *hand, uint8_t *hand_size, size_t index)
+const char* uno_validate_play(card* set, uint8_t *hand, uint8_t *hand_size, size_t index, size_t color_mode)
 {
   if(hand[index] == (uint8_t)250) return concatf("Not a card.");
   uint8_t card = hand[index];
   uint8_t arr_index = num_of_cards - plays;
   if(plays == 1 || set[card].color == NONE)    {   
       played_cards[arr_index] = card;
+      if(set[card].value == WILD_CARD || set[card].value == DRAW_4)
+	{
+	  if(color_mode == 1) set[card].color = RED;
+	  if(color_mode == 2) set[card].color = BLUE;
+	  if(color_mode == 3) set[card].color = GREEN;
+	  if(color_mode == 4) set[card].color = YELLOW;
+	}
+
       ++*hand_size;
       play_card(card);
       shift_hand(hand, index);
-      return concatf("You have played a %s %s!\n",get_ccolor(set_of_cards[card]), get_cvalue(set_of_cards[card]));
+      return concatf("You have played a %s %s!\n",get_ccolor(set[card]), get_cvalue(set[card]));
     }
   else
     {
@@ -85,13 +93,20 @@ const char* uno_validate_play(card* set, uint8_t *hand, uint8_t *hand_size, size
 	{
 	  return concatf("You can't play this card.\n");
 	}
-      if(set[played_cards[arr_index]].value == WILD_CARD || set[played_cards[arr_index]].value == DRAW_4) set[played_cards[arr_index]].color = NONE;
+      if(set[played_cards[arr_index+1]].value == WILD_CARD || set[played_cards[arr_index+1]].value == DRAW_4) set[played_cards[arr_index]].color = NONE;
       played_cards[arr_index] = card;
+      if(set[card].value == WILD_CARD || set[card].value == DRAW_4)
+	{
+	  if(color_mode == 1) set[card].color = RED;
+	  if(color_mode == 2) set[card].color = BLUE;
+	  if(color_mode == 3) set[card].color = GREEN;
+	  if(color_mode == 4) set[card].color = YELLOW;
+	}
       ++*hand_size;
       play_card(card);
       shift_hand(hand, index);
     }
-  return concatf("You have played a %s %s!\n",get_ccolor(set_of_cards[card]), get_cvalue(set_of_cards[card]));
+  return concatf("You have played a %s %s!\n",get_ccolor(set[card]), get_cvalue(set[card]));
 }
 
 void exit_uno()

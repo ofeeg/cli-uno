@@ -135,7 +135,22 @@ void uno_menu_control()
 	wrefresh(windows[YOUR_HAND_W]);
 	break;
       case 10:
-	log_msg = uno_validate_play(set_of_cards, hand, &hand_size, ((cursor_index+hand_size) % num_of_cards));
+	if(set_of_cards[hand[((cursor_index+hand_size)%num_of_cards)]].color == NONE)
+	  {
+	    char choice = 0;
+	    mvaddstr(23, 1, "                                ");
+	    mvaddstr(23, 1, "Select Color: 1.R 2.B 3.G 4.Y");
+	    while(choice > '4' || choice < '1')
+	      {
+		choice = 0;
+		choice = getch();
+	      }
+	    log_msg = uno_validate_play(set_of_cards, hand, &hand_size, ((cursor_index+hand_size) % num_of_cards), choice);
+	  }
+	else
+	  {
+	    log_msg = uno_validate_play(set_of_cards, hand, &hand_size, ((cursor_index+hand_size) % num_of_cards), 0);
+	  }
 	wprintw(windows[LOG_W], log_msg);
 	display_hand(hand, 0, 1);
 	wrefresh(windows[LOG_W]);
@@ -155,7 +170,7 @@ static void wait_for_turns()
 	{
 	  if(i == 2)
 	    {
-	      const char *c = uno_validate_play(set_of_cards, hand2, &hand_size2, n);
+	      const char *c = uno_validate_play(set_of_cards, hand2, &hand_size2, n, 1);
 	      if(c[0] =='N'){
 		hand2[--hand_size2] = draw_card(uno_deck, num_of_cards); ++n;}
 	       //"You can't play this card.\n"
@@ -168,7 +183,7 @@ static void wait_for_turns()
 	    }
 	  else if(i == 3)
 	    {
-	      const char *c = uno_validate_play(set_of_cards, hand3, &hand_size3, n);
+	      const char *c = uno_validate_play(set_of_cards, hand3, &hand_size3, n, 2);
 	      if(c[0] =='N'){hand3[--hand_size3] = draw_card(uno_deck, num_of_cards); ++n;}
 	      else if(c[4] != 'c'){
 		wprintw(windows[LOG_W], c);
@@ -179,7 +194,7 @@ static void wait_for_turns()
 	    }
 	  else 
 	    {
-	      const char *c = uno_validate_play(set_of_cards, hand4, &hand_size4, n);
+	      const char *c = uno_validate_play(set_of_cards, hand4, &hand_size4, n, 3);
 	      if(c[0] =='N'){hand4[--hand_size4] = draw_card(uno_deck, num_of_cards); ++n;}
 	      else if(c[4] != 'c'){
 		wprintw(windows[LOG_W], c);
