@@ -131,7 +131,7 @@ void uno_menu_control()
 	break;
       case KEY_DOWN:
 	hand[--hand_size] = draw_card(uno_deck, num_of_cards);
-	display_hand(hand, cursor_index,1);
+	display_hand(hand, ((++cursor_index)-position) ,1);
 	wrefresh(windows[YOUR_HAND_W]);
 	break;
       case 10:
