@@ -89,11 +89,11 @@ const char* uno_validate_play(card* set, uint8_t *hand, uint8_t *hand_size, size
     }
   else
     {
-      if(set[card].color != set[played_cards[arr_index+1]].color || set[card].value != set[played_cards[arr_index+1]].value)
+      if(set[card].color != set[played_cards[arr_index+1]].color && set[card].value != set[played_cards[arr_index+1]].value)
 	{
 	  return concatf("You can't play this card.\n");
 	}
-      if(set[played_cards[arr_index+1]].value == WILD_CARD || set[played_cards[arr_index+1]].value == DRAW_4) set[played_cards[arr_index]].color = NONE;
+      if(set[played_cards[arr_index+1]].value == WILD_CARD || set[played_cards[arr_index+1]].value == DRAW_4) set[played_cards[arr_index+1]].color = NONE;
       played_cards[arr_index] = card;
       if(set[card].value == WILD_CARD || set[card].value == DRAW_4)
 	{

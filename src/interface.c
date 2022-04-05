@@ -131,7 +131,8 @@ void uno_menu_control()
 	break;
       case KEY_DOWN:
 	hand[--hand_size] = draw_card(uno_deck, num_of_cards);
-	display_hand(hand, ((++cursor_index)-position) ,1);
+	display_hand(hand, ((cursor_index+1)-(position)) ,1);
+	
 	wrefresh(windows[YOUR_HAND_W]);
 	break;
       case 10:
@@ -145,7 +146,7 @@ void uno_menu_control()
 		choice = 0;
 		choice = getch();
 	      }
-	    log_msg = uno_validate_play(set_of_cards, hand, &hand_size, ((cursor_index+hand_size) % num_of_cards), choice);
+	    log_msg = uno_validate_play(set_of_cards, hand, &hand_size, ((cursor_index+hand_size) % num_of_cards), atoi(&choice));
 	  }
 	else
 	  {
@@ -153,6 +154,8 @@ void uno_menu_control()
 	  }
 	wprintw(windows[LOG_W], log_msg);
 	display_hand(hand, 0, 1);
+	position = 1;
+	cursor_index = 0;
 	wrefresh(windows[LOG_W]);
 	refresh();
 	if(log_msg[0] != 'N' && log_msg[4] != 'c'){wait_for_turns();}
