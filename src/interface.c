@@ -1,5 +1,6 @@
 #include "../headers/interface.h"
-
+#include <stdio.h>
+#include <stdlib.h>
 #include <curses.h>
 #include <stdint.h>
 
@@ -107,6 +108,8 @@ void uno_menu_control()
     mvaddstr(23, 1, "                                ");
     mvaddstr(23, 1, get_ccolor(set_of_cards[hand[hand_size+cursor_index]]));
     mvaddstr(23, 8, get_cvalue(set_of_cards[hand[hand_size+cursor_index]]));
+    //TODO: show num of cards in other hands. 
+    mvaddstr(6, 20, );
     int c = mvgetch(20, (7+position));
     refresh();
     switch(c)
