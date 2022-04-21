@@ -69,7 +69,7 @@ char *concatf(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
 
 const char* uno_validate_play(card* set, uint8_t *hand, uint8_t *hand_size, size_t index, size_t color_mode)
 {
-  if(hand[index] == (uint8_t)250) return concatf("Not a card.");
+  if(hand[index] == (uint8_t)250) return concatf("Not a card.\n");
   uint8_t card = hand[index];
   uint8_t arr_index = num_of_cards - plays;
   if(plays == 1 || set[card].color == NONE)    {   

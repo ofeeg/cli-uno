@@ -20,9 +20,12 @@ extern uint8_t hand_size2;
 extern uint8_t hand_size3;
 extern uint8_t hand_size4;
 
+char *anonimized_hand = "#######";
 
+void ui_print(WINDOW *win, int starty, int startx, size_t s_length, char *string, chtype color);
 void ui_print_in_middle(WINDOW *win, int starty, int startx, int width, char *string, chtype color);
-void ui_print_in_middle_v(WINDOW *win, int starty, int startx, int width, char *string, chtype color);
+void ui_print_vertically(WINDOW *win, int starty, int startx, int s_length, char *string, chtype color);
+
 
 
 void init_uno_interface()
@@ -69,11 +72,12 @@ void init_uno_interface()
   init_pair(3, COLOR_WHITE, COLOR_GREEN);
   init_pair(4, COLOR_WHITE, COLOR_YELLOW);
   ui_print_in_middle(hand_text, 1, 0, 9, "My Hand", COLOR_PAIR(DEFAULT_C));
-  ui_print_in_middle_v(hand_textp2, 0, 1, 9, "p2 Hand", COLOR_PAIR(DEFAULT_C));
+  ui_print_vertically(hand_textp2, 1, 1, 7, "p2 Hand", COLOR_PAIR(DEFAULT_C));
   ui_print_in_middle(hand_textp3, 1, 0, 9, "p3 Hand", COLOR_PAIR(DEFAULT_C));
-  ui_print_in_middle_v(hand_textp4, 0, 1, 9, "p4 Hand", COLOR_PAIR(DEFAULT_C));
+  ui_print_vertically(hand_textp4, 1, 1, 7, "p4 Hand", COLOR_PAIR(DEFAULT_C));
   ui_print_in_middle(score_box_text, 1, 0, 26, "Score", COLOR_PAIR(DEFAULT_C));
   ui_print_in_middle(log_text, 1, 0, 24, "Log", COLOR_PAIR(DEFAULT_C));
+  ui_print_vertically(p2_hand, 1, 1, 4, anonimized_hand, COLOR_PAIR(DEFAULT_C));
   ui_print_in_middle(scores, 1, 0, 26, "1:000 2:000 3:000 4:000", COLOR_PAIR(DEFAULT_C));
   windows[0] = table;
   windows[1] = your_hand;
@@ -106,10 +110,14 @@ void uno_menu_control()
   refresh();
   while(1){
     mvaddstr(23, 1, "                                ");
+    ui_print_vertically(windows[P2_HAND_W], 1, 1, 7, "       ", COLOR_PAIR(DEFAULT_C));
+    ui_print_vertically(windows[P4_HAND_W], 1, 1, 7, "       ", COLOR_PAIR(DEFAULT_C));
+    ui_print(windows[P3_HAND_W], 1, 1, 7, "       ", COLOR_PAIR(DEFAULT_C));
     mvaddstr(23, 1, get_ccolor(set_of_cards[hand[hand_size+cursor_index]]));
     mvaddstr(23, 8, get_cvalue(set_of_cards[hand[hand_size+cursor_index]]));
-    //TODO: show num of cards in other hands. 
-    mvaddstr(6, 20, );
+    display_hand(hand2, 0, 2);
+    display_hand(hand3, 0, 3);
+    display_hand(hand4, 0, 4);
     int c = mvgetch(20, (7+position));
     refresh();
     switch(c)
@@ -236,10 +244,9 @@ void ui_print_in_middle(WINDOW *win, int starty, int startx, int width, char *st
 	refresh();
 }
 
-
-void ui_print_in_middle_v(WINDOW *win, int starty, int startx, int width, char *string, chtype color)
-{	int length, x, y;
-	float temp;
+void ui_print(WINDOW *win, int starty, int startx, size_t s_length, char *string, chtype color)
+    {
+      int x, y;
 
 	if(win == NULL)
 		win = stdscr;
@@ -248,18 +255,39 @@ void ui_print_in_middle_v(WINDOW *win, int starty, int startx, int width, char *
 		x = startx;
 	if(starty != 0)
 		y = starty;
-	if(width == 0)
-		width = 80;
+	if(s_length == 0)
+		s_length = 80;
 
-	length = strlen(string);
-	temp = (width - length)/ 2;
-	y = starty + (int)temp;
 	wattron(win, color);
-	for(int i = 0; i < 7; ++i)
+	for(int i = 0; i < s_length; ++i)
+	  {
+	    mvwaddch(win, y, x+i, string[i]);
+	  };
+	wattroff(win, color);
+	wrefresh(win);
+	refresh();
+    }
+
+void ui_print_vertically(WINDOW *win, int starty, int startx, int s_length, char *string, chtype color)
+{	int x, y;
+
+	if(win == NULL)
+		win = stdscr;
+	getyx(win, y, x);
+	if(startx != 0)
+		x = startx;
+	if(starty != 0)
+		y = starty;
+	if(s_length == 0)
+		s_length = 80;
+
+	wattron(win, color);
+	for(int i = 0; i < s_length; ++i)
 	  {
 	    mvwaddch(win, y+i, x, string[i]);
 	  };
 	wattroff(win, color);
+	wrefresh(win);
 	refresh();
 }
 
@@ -311,6 +339,31 @@ static void  display_hand(uint8_t *hand, size_t cursor_index, uint8_t player)
 		}
 	    }
 	}
+    }
+  else
+    {
+    WINDOW *win;
+    size_t h_size;
+    switch (player) {
+    case 2:
+      win = windows[P2_HAND_W];
+      h_size = hand_size2;
+      break;
+    case 3:
+      win = windows[P3_HAND_W];
+      h_size = hand_size3;
+      break;
+    case 4:
+      win = windows[P4_HAND_W];
+      h_size = hand_size4;
+      break;
+    }
+    if(h_size < 105) h_size = 7;
+    else h_size = num_of_cards - h_size;
+    if(player != 3) {ui_print_vertically(win, 1, 1,  h_size, anonimized_hand, COLOR_PAIR(DEFAULT_C));}
+    else {ui_print(win, 1, 1, h_size, anonimized_hand, COLOR_PAIR(DEFAULT_C));}
+    wrefresh(win);
+    refresh();
     }
 }
 
