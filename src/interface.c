@@ -142,10 +142,17 @@ void uno_menu_control()
 	break;
       case KEY_DOWN:
 	hand[--hand_size] = draw_card(uno_deck, num_of_cards);
-	display_hand(hand, ((cursor_index+1)-(position)) ,1);
-	
+	display_hand(hand, ((cursor_index+1)-(position)) ,1);	
 	wrefresh(windows[YOUR_HAND_W]);
 	break;
+      case KEY_UP:
+	if (hand_size < num_of_cards-2) {
+	  wprintw(windows[LOG_W], "Cannot declare uno.");
+	  wrefresh(windows[LOG_W]);
+	  break;
+	}
+	wprintw(windows[LOG_W], "You declared uno!");
+	wrefresh(windows[LOG_W]);
       case 10:
 	if(set_of_cards[hand[((cursor_index+hand_size)%num_of_cards)]].color == NONE)
 	  {
