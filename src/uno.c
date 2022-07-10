@@ -14,7 +14,7 @@ uint8_t *hand2;
 uint8_t *hand3;
 uint8_t *hand4;
 static void distribute_hands();
-
+void uno_draw(card* set, uint8_t *h, uint8_t *h_size);
 void init_uno()
 {
   load_cards(STANDARD_UNO);
@@ -108,6 +108,15 @@ const char* uno_validate_play(card* set, uint8_t *hand, uint8_t *hand_size, size
     }
   return concatf("You have played a %s %s!\n",get_ccolor(set[card]), get_cvalue(set[card]));
 }
+
+void uno_draw(card* set, uint8_t *h, uint8_t *h_size)
+{
+  h[--*h_size] = draw_card(uno_deck, num_of_cards);
+  uint8_t card = h[*h_size];
+  uint8_t arr_index = num_of_cards - plays;
+  if(set[card].color == set[played_cards[arr_index+1]].color || set[card].value == set[played_cards[arr_index+1]].value)return;
+  else uno_draw(set, h, h_size);
+};
 
 void exit_uno()
 {

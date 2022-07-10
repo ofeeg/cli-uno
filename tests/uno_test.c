@@ -17,6 +17,8 @@ int main(void) {
   hand[--hand_size] = draw_card(uno_deck, num_of_cards);
   printf(uno_validate_play(set_of_cards, hand, &hand_size, index, 1));
   printf(uno_validate_play(set_of_cards, hand, &hand_size, index+1, 0));
+  uno_draw(set_of_cards, hand, &hand_size);
+  printf("Can you play this card: %s %s?",get_ccolor(set_of_cards[hand[hand_size]]) ,get_cvalue(set_of_cards[hand[hand_size]]));
   exit_uno();
   return 0;
 }

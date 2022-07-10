@@ -154,7 +154,7 @@ void uno_menu_control()
 	wprintw(windows[LOG_W], "You declared uno!");
 	wrefresh(windows[LOG_W]);
       case 10:
-	if(set_of_cards[hand[((cursor_index+hand_size)%num_of_cards)]].color == NONE)
+	if(set_of_cards[hand[((cursor_index+hand_size) % num_of_cards)]].color == NONE)
 	  {
 	    char choice = 0;
 	    mvaddstr(23, 1, "                                ");
